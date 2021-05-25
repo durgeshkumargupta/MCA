@@ -3,14 +3,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class PersonTest
 {
     public static void main(String[] args) {
         Scanner sc=new Scanner(System.in);
         List<Person> personList=new ArrayList<>();
 
-        for (int i=0;i<2;i++)
+        System.out.println("Enter Number of Person Details:");
+        int num=sc.nextInt();
+        sc.nextLine();
+        for (int i=0;i<num;i++)
         {
             Person person=new Person();
             System.out.println("Enter Person name:");
@@ -26,3 +28,4 @@ public class PersonTest
 
     }
 }
+
