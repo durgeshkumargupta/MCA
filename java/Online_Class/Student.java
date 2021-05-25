@@ -4,7 +4,7 @@ public class Student
 {
     Scanner sc = new Scanner(System.in);
 
-    //Define variable name
+    //Define instance variable/class level variable/data memeber 
     private String name;
     private String address;
     private String email_id;
@@ -30,7 +30,7 @@ public class Student
         this.admission_fee = admission_fee;
         this.sports_fee = sports_fee;
     }
-    //define user define method for enter student details
+    //define member function for enter student details
     public void student_details()
     {
         System.out.println("Enter Student Name:");
@@ -48,7 +48,7 @@ public class Student
         total_fee = admission_fee+sports_fee;
     }
 
-    //define user define method for display student details
+    //define memeber function for display student details
     public void display(){
         System.out.println("Name="+this.name);
         System.out.println("Address:"+this.address);
