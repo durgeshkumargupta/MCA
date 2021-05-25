@@ -4,7 +4,7 @@ public class Student
 {
     Scanner sc = new Scanner(System.in);
 
-    //Define instance variable/class level variable/data memeber 
+    //Define instance variable/data memeber 
     private String name;
     private String address;
     private String email_id;
