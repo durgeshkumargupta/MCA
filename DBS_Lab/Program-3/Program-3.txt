@@ -1,0 +1,466 @@
+mysql> use lab3;
+Database changed
+mysql> show tables;
++----------------+
+| Tables_in_lab3 |
++----------------+
+| student        |
++----------------+
+1 row in set (0.18 sec)
+
+mysql> create database labthree;
+Query OK, 1 row affected (0.20 sec)
+
+mysql> ^C
+mysql> CREATE TABLE solar_panel (PV VARCHAR(25),capacity INT,price INT,warranty INT);
+Query OK, 0 rows affected (1.37 sec)
+
+mysql>  ALTER TABLE solar_panel ADD PRIMARY KEY (PV);
+Query OK, 0 rows affected (1.83 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE solar_panel ADD type VARCHAR(25);
+Query OK, 0 rows affected (0.59 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc solar_panel;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| PV       | varchar(25) | NO   | PRI | NULL    |       |
+| capacity | int         | YES  |     | NULL    |       |
+| price    | int         | YES  |     | NULL    |       |
+| warranty | int         | YES  |     | NULL    |       |
+| type     | varchar(25) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+5 rows in set (0.23 sec)
+
+mysql> ^C
+mysql> CREATE TABLE distributor (d_TIN INT,d_name VARCHAR(25),d_addr VARCHAR(50),d_contact VARCHAR(25), PRIMARY KEY (d_TIN));
+Query OK, 0 rows affected (0.46 sec)
+
+mysql> desc distributor;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| d_TIN     | int         | NO   | PRI | NULL    |       |
+| d_name    | varchar(25) | YES  |     | NULL    |       |
+| d_addr    | varchar(50) | YES  |     | NULL    |       |
+| d_contact | varchar(25) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql>  CREATE TABLE users (u_buildno INT, u_name VARCHAR(25), u_area VARCHAR(25), PRIMARY KEY (u_buildno));
+Query OK, 0 rows affected (0.40 sec)
+
+mysql> desc users;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| u_buildno | int         | NO   | PRI | NULL    |       |
+| u_name    | varchar(25) | YES  |     | NULL    |       |
+| u_area    | varchar(25) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.12 sec)
+
+mysql>  CREATE TABLE sold_by (d_TIN INT,PV VARCHAR(25), PRIMARY KEY(d_TIN,PV),FOREIGN KEY (d_TIN) REFERENCES distributor(d_TIN),FOREIGN KEY (PV) REFERENCES solar_panel(PV));
+Query OK, 0 rows affected (1.42 sec)
+
+mysql> desc sold_by;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| d_TIN | int         | NO   | PRI | NULL    |       |
+| PV    | varchar(25) | NO   | PRI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE purchased_by (u_buildno INT,PV VARCHAR(25), PRIMARY KEY(u_buildno,PV),FOREIGN KEY (u_buildno) REFERENCES users(u_buildno),FOREIGN KEY (PV) REFERENCES solar_panel(PV));
+Query OK, 0 rows affected (0.68 sec)
+
+mysql> desc purchased_by;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| u_buildno | int         | NO   | PRI | NULL    |       |
+| PV        | varchar(25) | NO   | PRI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql>  CREATE TABLE installation (PV VARCHAR(25),u_buildno INT, d_TIN INT, PRIMARY KEY(PV,u_buildno,d_TIN), FOREIGN KEY
+    ->  (PV) REFERENCES solar_panel(PV),FOREIGN KEY (u_buildno) REFERENCES users(u_buildno), FOREIGN KEY (d_TIN) REFERENCES distributor(d_TIN));
+Query OK, 0 rows affected (1.90 sec)
+
+mysql> alter table installation ADD (ins_charge INT,ins_type VARCHAR(25),ins_date DATE);
+Query OK, 0 rows affected (0.76 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc installation;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| PV         | varchar(25) | NO   | PRI | NULL    |       |
+| u_buildno  | int         | NO   | PRI | NULL    |       |
+| d_TIN      | int         | NO   | PRI | NULL    |       |
+| ins_charge | int         | YES  |     | NULL    |       |
+| ins_type   | varchar(25) | YES  |     | NULL    |       |
+| ins_date   | date        | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.02 sec)
+
+mysql> desc solar_panel;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| PV       | varchar(25) | NO   | PRI | NULL    |       |
+| capacity | int         | YES  |     | NULL    |       |
+| price    | int         | YES  |     | NULL    |       |
+| warranty | int         | YES  |     | NULL    |       |
+| type     | varchar(25) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> desc distributor;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| d_TIN     | int         | NO   | PRI | NULL    |       |
+| d_name    | varchar(25) | YES  |     | NULL    |       |
+| d_addr    | varchar(50) | YES  |     | NULL    |       |
+| d_contact | varchar(25) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc users;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| u_buildno | int         | NO   | PRI | NULL    |       |
+| u_name    | varchar(25) | YES  |     | NULL    |       |
+| u_area    | varchar(25) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc sold_by;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| d_TIN | int         | NO   | PRI | NULL    |       |
+| PV    | varchar(25) | NO   | PRI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc purchased_by;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| u_buildno | int         | NO   | PRI | NULL    |       |
+| PV        | varchar(25) | NO   | PRI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc installation;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| PV         | varchar(25) | NO   | PRI | NULL    |       |
+| u_buildno  | int         | NO   | PRI | NULL    |       |
+| d_TIN      | int         | NO   | PRI | NULL    |       |
+| ins_charge | int         | YES  |     | NULL    |       |
+| ins_type   | varchar(25) | YES  |     | NULL    |       |
+| ins_date   | date        | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> insert into solar_panel values("pv_1",1,3000,3,"monocystalline");
+Query OK, 1 row affected (0.18 sec)
+
+mysql> insert into solar_panel values("pv_2",2,5000,4,"monocystalline");
+Query OK, 1 row affected (0.20 sec)
+
+mysql> insert into solar_panel values("pv_3",3,2000,2,"polycystalline");
+Query OK, 1 row affected (0.06 sec)
+
+
+mysql> insert into solar_panel values("pv_4",4,9000,1,"polycystalline");
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into solar_panel values("pv_5",5,4000,7,"polycystalline");
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from solar_panel;
++------+----------+-------+----------+----------------+
+| PV   | capacity | price | warranty | type           |
++------+----------+-------+----------+----------------+
+| pv_1 |        1 |  3000 |        3 | monocystalline |
+| pv_2 |        2 |  5000 |        4 | monocystalline |
+| pv_3 |        3 |  2000 |        2 | polycystalline |
+| pv_4 |        4 |  9000 |        1 | polycystalline |
+| pv_5 |        5 |  4000 |        7 | polycystalline |
++------+----------+-------+----------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into distributor values(101,"rajesh","bangalore","rajesh@gmail.com");
+Query OK, 1 row affected (0.20 sec)
+
+mysql> insert into distributor values(102,"chandu","bangalore","chandu@gmail.com");
+Query OK, 1 row affected (0.21 sec)
+
+mysql> insert into distributor values(103,"sharma","mysore","sharma@gmail.com");
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into distributor values(103,"chummi","mangalore","chummi@gmail.com");
+ERROR 1062 (23000): Duplicate entry '103' for key 'distributor.PRIMARY'
+mysql> insert into distributor values(104,"chummi","mangalore","chummi@gmail.com");
+Query OK, 1 row affected (0.19 sec)
+
+mysql> insert into distributor values(105,"raghavendra","chennai","raghu@gmail.com");
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from distributor;
++-------+-------------+-----------+------------------+
+| d_TIN | d_name      | d_addr    | d_contact        |
++-------+-------------+-----------+------------------+
+|   101 | rajesh      | bangalore | rajesh@gmail.com |
+|   102 | chandu      | bangalore | chandu@gmail.com |
+|   103 | sharma      | mysore    | sharma@gmail.com |
+|   104 | chummi      | mangalore | chummi@gmail.com |
+|   105 | raghavendra | chennai   | raghu@gmail.com  |
++-------+-------------+-----------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from distributor;\
++-------+-------------+-----------+------------------+
+| d_TIN | d_name      | d_addr    | d_contact        |
++-------+-------------+-----------+------------------+
+|   101 | rajesh      | bangalore | rajesh@gmail.com |
+|   102 | chandu      | bangalore | chandu@gmail.com |
+|   103 | sharma      | mysore    | sharma@gmail.com |
+|   104 | chummi      | mangalore | chummi@gmail.com |
+|   105 | raghavendra | chennai   | raghu@gmail.com  |
++-------+-------------+-----------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into users values(1,"user1","maruthinagar");
+Query OK, 1 row affected (0.20 sec)
+
+mysql> insert into users values(2,"user2","jayanagar");
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into users values(3,"user3","malleshwaram");
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into users values(4,"user4","mgroad");
+Query OK, 1 row affected (0.20 sec)
+
+mysql> insert into users values(5,"user5","vijaynagar");
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select * from users;
++-----------+--------+--------------+
+| u_buildno | u_name | u_area       |
++-----------+--------+--------------+
+|         1 | user1  | maruthinagar |
+|         2 | user2  | jayanagar    |
+|         3 | user3  | malleshwaram |
+|         4 | user4  | mgroad       |
+|         5 | user5  | vijaynagar   |
++-----------+--------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into sold_by values(1,"pv_1");
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`lab3`.`sold_by`, CONSTRAINT `sold_by_ibfk_1` FOREIGN KEY (`d_TIN`) REFERENCES `distributor` (`d_TIN`))
+mysql>  update users set u_buildno=11 where u_buildno=1;
+Query OK, 1 row affected (0.21 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update users set u_buildno=12 where u_buildno=2;
+Query OK, 1 row affected (0.17 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>  update users set u_buildno=13 where u_buildno=3;
+Query OK, 1 row affected (0.17 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update users set u_buildno=14 where u_buildno=4;
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>  update users set u_buildno=15 where u_buildno=5;
+Query OK, 1 row affected (0.14 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from users;
++-----------+--------+--------------+
+| u_buildno | u_name | u_area       |
++-----------+--------+--------------+
+|        11 | user1  | maruthinagar |
+|        12 | user2  | jayanagar    |
+|        13 | user3  | malleshwaram |
+|        14 | user4  | mgroad       |
+|        15 | user5  | vijaynagar   |
++-----------+--------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into sold_by values(1,"pv_1");
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`lab3`.`sold_by`, CONSTRAINT `sold_by_ibfk_1` FOREIGN KEY (`d_TIN`) REFERENCES `distributor` (`d_TIN`))
+mysql> insert into purchased_by values(11,"pv_1");
+Query OK, 1 row affected (0.16 sec)
+
+mysql> insert into purchased_by values(12,"pv_2");
+Query OK, 1 row affected (0.17 sec)
+
+mysql> insert into purchased_by values(13,"pv_3");
+Query OK, 1 row affected (0.22 sec)
+
+mysql> insert into purchased_by values(14,"pv_4");
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into purchased_by values(15,"pv_5");
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from purchased_by;
++-----------+------+
+| u_buildno | PV   |
++-----------+------+
+|        11 | pv_1 |
+|        12 | pv_2 |
+|        13 | pv_3 |
+|        14 | pv_4 |
+|        15 | pv_5 |
++-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> insert into installation values("pv_1",11,1,40000,"commercial","2020-10-01");
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`lab3`.`installation`, CONSTRAINT `installation_ibfk_3` FOREIGN KEY (`d_TIN`) REFERENCES `distributor` (`d_TIN`))
+mysql> desc sold_by;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| d_TIN | int         | NO   | PRI | NULL    |       |
+| PV    | varchar(25) | NO   | PRI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.32 sec)
+
+mysql> select * from sold_by;
+Empty set (0.01 sec)
+
+mysql> insert into sold_by values(10,"pv_1");
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`lab3`.`sold_by`, CONSTRAINT `sold_by_ibfk_1` FOREIGN KEY (`d_TIN`) REFERENCES `distributor` (`d_TIN`))
+mysql> insert into sold_by values(101,"pv_1");
+Query OK, 1 row affected (0.17 sec)
+
+mysql> insert into sold_by values(102,"pv_1");
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into sold_by values(103,"pv_1");
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into sold_by values(104,"pv_1");
+Query OK, 1 row affected (0.20 sec)
+
+mysql> insert into sold_by values(104,"pv_1");
+ERROR 1062 (23000): Duplicate entry '104-pv_1' for key 'sold_by.PRIMARY'
+mysql> delete table sold_by;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table sold_by' at line 1
+mysql> drop table sold_by;
+Query OK, 0 rows affected (0.65 sec)
+
+mysql>  CREATE TABLE sold_by (d_TIN INT,PV VARCHAR(25), PRIMARY KEY(d_TIN,PV),FOREIGN KEY (d_TIN) REFERENCES distributor(d_TIN),FOREIGN KEY (PV) REFERENCES solar_panel(PV));
+Query OK, 0 rows affected (1.40 sec)
+
+mysql> insert into sold_by values(1,"pv_1");
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`lab3`.`sold_by`, CONSTRAINT `sold_by_ibfk_1` FOREIGN KEY (`d_TIN`) REFERENCES `distributor` (`d_TIN`))
+mysql> insert into sold_by values(101,"pv_1");
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into sold_by values(102,"pv_2");
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into sold_by values(103,"pv_3");
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into sold_by values(104,"pv_4");
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into sold_by values(105,"pv_5");
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from sold_by;
++-------+------+
+| d_TIN | PV   |
++-------+------+
+|   101 | pv_1 |
+|   102 | pv_2 |
+|   103 | pv_3 |
+|   104 | pv_4 |
+|   105 | pv_5 |
++-------+------+
+5 rows in set (0.00 sec)
+
+mysql> desc sold_by;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| d_TIN | int         | NO   | PRI | NULL    |       |
+| PV    | varchar(25) | NO   | PRI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.15 sec)
+
+mysql> select * from sold_by;
++-------+------+
+| d_TIN | PV   |
++-------+------+
+|   101 | pv_1 |
+|   102 | pv_2 |
+|   103 | pv_3 |
+|   104 | pv_4 |
+|   105 | pv_5 |
++-------+------+
+5 rows in set (0.00 sec)
+
+mysql> alter table installation ADD (ins_charge INT,ins_type VARCHAR(25),ins_date DATE);
+ERROR 1060 (42S21): Duplicate column name 'ins_charge'
+mysql> CREATE TABLE installation (PV VARCHAR(25),u_buildno INT, d_TIN INT, PRIMARY KEY(PV,u_buildno,d_TIN), FOREIGN KEY
+    ->  (PV) REFERENCES solar_panel(PV),FOREIGN KEY (u_buildno) REFERENCES users(u_buildno), FOREIGN KEY (d_TIN) REFERENCES distributor(d_TIN));
+ERROR 1050 (42S01): Table 'installation' already exists
+mysql> alter table installation ADD (ins_charge INT,ins_type VARCHAR(25),ins_date DATE);
+ERROR 1060 (42S21): Duplicate column name 'ins_charge'
+mysql> select * from purchased_by;
++-----------+------+
+| u_buildno | PV   |
++-----------+------+
+|        11 | pv_1 |
+|        12 | pv_2 |
+|        13 | pv_3 |
+|        14 | pv_4 |
+|        15 | pv_5 |
++-----------+------+
+5 rows in set (0.02 sec)
+
+mysql> insert into installation values("pv_1",11,101,40000,"commercial","2020-10-01");
+Query OK, 1 row affected (0.19 sec)
+
+mysql> insert into installation values("pv_2",12,102,50000,"commercial","2020-06-02");
+Query OK, 1 row affected (0.21 sec)
+
+mysql> insert into installation values("pv_3",13,103,20000,"non-commercial","2021-01-02");
+Query OK, 1 row affected (0.17 sec)
+
+mysql> insert into installation values("pv_4",14,104,60000,"non-commercial","2021-01-22");
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into installation values("pv_5",15,105,70000,"commercial","2019-12-07");
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from installation;
++------+-----------+-------+------------+----------------+------------+
+| PV   | u_buildno | d_TIN | ins_charge | ins_type       | ins_date   |
++------+-----------+-------+------------+----------------+------------+
+| pv_1 |        11 |   101 |      40000 | commercial     | 2020-10-01 |
+| pv_2 |        12 |   102 |      50000 | commercial     | 2020-06-02 |
+| pv_3 |        13 |   103 |      20000 | non-commercial | 2021-01-02 |
+| pv_4 |        14 |   104 |      60000 | non-commercial | 2021-01-22 |
+| pv_5 |        15 |   105 |      70000 | commercial     | 2019-12-07 |
++------+-----------+-------+------------+----------------+------------+
+5 rows in set (0.00 sec)

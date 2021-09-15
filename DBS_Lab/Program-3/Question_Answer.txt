@@ -1,0 +1,57 @@
+1)list the vendors with most installation in domestic places
+sql>select d.d_name,count(d.d_TIN) from distributor d,installation i where i.d_TIN=d.d_TIN and i.ins_type="non-commercial" group by d.d_TIN;
++--------+----------------+
+| d_name | count(d.d_TIN) |
++--------+----------------+
+| sonu   |              1 |
+| Ravi   |              1 |
++--------+----------------+
+2 rows in set (0.072 sec)
+
+2)list the place name with highest capacity panel installed
+sql> select u.u_area from users u,solar_panel p,installation i where u.u_buildno=i.u_buildno and p.pv=i.pv and p.capacity=(select max(capacity) from solar_panel);
++------------+
+| u_area     |
++------------+
+| vijaynagar |
++------------+
+1 row in set (0.008 sec)
+
+
+3)display the area where monocrystalline pannelsa are installed
+sql> select distinct u.u_area,u.u_buildno from users u,solar_panel p,installation i where u.u_buildno=i.u_buildno and p.pv=i.pv and p.type="monocystalline";
++--------------+-----------+
+| u_area       | u_buildno |
++--------------+-----------+
+| maruthinagar |        11 |
+| jayanagar    |        12 |
++--------------+-----------+
+2 rows in set (0.001 sec)
+
+
+4)List the place where both type of panels are installed and calculate the installation charges.
+sql>select u.u_buildno,u.u_area,s.type   from users u,installation i,solar_panel s where s.PV=i.PV and  u.u_buildno=i.u_buildno and s.type="monocystalline";
++-----------+--------------+----------------+
+| u_buildno | u_area       | type           |
++-----------+--------------+----------------+
+|        11 | maruthinagar | monocystalline |
+|        12 | jayanagar    | monocystalline |
++-----------+--------------+----------------+
+2 rows in set (0.038 sec)
+
+5)list the details of vendor and panel that is the oldest installation
+MariaDB [lab3]> select d.*,s.*,i.ins_date from distributor d, solar_panel s, installation i where d.d_tin=i.d_tin and s.pv=i.pv and i.ins_date in(select min(ins_date) from installation);
++-------+--------+--------+----------------+------+----------+-------+----------+----------------+------------+
+| d_TIN | d_name | d_addr | d_contact      | PV   | capacity | price | warranty | type           | ins_date   |
++-------+--------+--------+----------------+------+----------+-------+----------+----------------+------------+
+|   105 | Amit   | UP     | amit@gmail.com | pv_5 |        5 |  4000 |        7 | polycystalline | 2019-12-07 |
++-------+--------+--------+----------------+------+----------+-------+----------+----------------+------------+
+
+6)find the average sales of both type of panels in only commercial places
+MariaDB [lab3]> select d.type,avg(d.ins_charge) from ( select a.*,b.capacity,c.u_area,b.type  from installation a inner join solar_panel b  on a.pv=b.pv inner join users c on c.u_buildno=a.u_buildno  where a.ins_type="commercial")as d GROUP by d.type;
++----------------+-------------------+
+| type           | avg(d.ins_charge) |
++----------------+-------------------+
+| monocystalline |        45000.0000 |
+| polycystalline |        70000.0000 |
++----------------+-------------------+

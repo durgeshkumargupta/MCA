@@ -1,0 +1,64 @@
+1.List the details of patients who are 40 year old and have been checkes by Nerologists speecialist.
+MariaDB [health]> select p.* from patient p ,doctor d,checks c where p.p_ssn=c.p_ssn and d.d_ssn=c.d_ssn and p.age=40 and d.speciality="Nerologists";
++-------+------+---------+------+
+| p_ssn | name | address | age  |
++-------+------+---------+------+
+| P004  | Ram  | Delhi   |   40 |
++-------+------+---------+------+
+1 row in set (0.003 sec)
+
+2.List the details of doctors who have given the prescription to more then 2 patients in year 2013.
+sql> select D.*,count(P.D_ssn) from Doctor D,Prescribe P where D.D_ssn=P.D_ssn and year(P.prescribe_date)="2013" group by P.D_ssn having count(P.D_ssn)>=2;
++-------+-------+------------+------------+----------------+
+| d_ssn | name  | speciality | experience | count(P.D_ssn) |
++-------+-------+------------+------------+----------------+
+| d100  | rahul | eye        | 21         |              2 |
++-------+-------+------------+------------+----------------+
+1 row in set (0.003 sec)
+
+
+
+
+3.Retrieve the details of doctor having maximimum experience.
+sql> select *from doctor where  experience in (select max(experience)from doctor);
++-------+------+---------------------+------------+
+| d_ssn | name | speciality          | experience |
++-------+------+---------------------+------------+
+| D003  | Aman | gastroenterologists | 8+         |
++-------+------+---------------------+------------+
+1 row in set (0.006 sec)
+
+4.List the details of pharmaceutical companies who supply drug to more then 10 pharmacies in the same city where company is located.
+sql>select distinct d.* from drug d,pharmacy p,sold_by s where p.p_name=s.p_name and s.trade_name=d.trade_name;
++-------------+---------+---------+
+| trade_name  | formula | pc_name |
++-------------+---------+---------+
+| Nice        | CH2M1   | Nandi   |
+| Paracetomol | CH3     | cipla   |
+| sinarest    | N12MG15 | nandi   |
+| sumo        | N12MG2  | cipla   |
+| zincovit    | xyz     | zinc    |
++-------------+---------+---------+
+
+5.List the details of drug supplied by only one pharmaceutical company.
+MariaDB [health]> select d.*,count(pc_name) from drug d group by pc_name having count(pc_name);
++-------------+---------+---------+----------------+
+| trade_name  | formula | pc_name | count(pc_name) |
++-------------+---------+---------+----------------+
+| Paracetomol | CH3     | cipla   |              2 |
+| Nice        | CH2M1   | Nandi   |              2 |
+| zincovit    | xyz     | zinc    |              1 |
++-------------+---------+---------+----------------+
+
+6.List the details of drug supplied.
+sql> select p.*,d.trade_name from pharmacy p,sold_by s,drug d where s.p_name=p.p_name and d.trade_name=s.trade_name;
++------------+-----------+------------+-------------+
+| p_name     | address   | ph_no      | trade_name  |
++------------+-----------+------------+-------------+
+| bartell    | chennai   | 8097065432 | Nice        |
+| healthmart | tiptur    | 8550885540 | Paracetomol |
+| omnicare   | tumkur    | 7890654678 | sinarest    |
+| riteaid    | shivmogga | 8076812345 | sumo        |
+| walgreens  | bangalore | 9823412345 | zincovit    |
++------------+-----------+------------+-------------+
+5 rows in set (0.061 sec)

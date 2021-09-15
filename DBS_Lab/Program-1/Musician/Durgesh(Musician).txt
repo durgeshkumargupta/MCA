@@ -1,0 +1,99 @@
+mysql> create database lab1;
+Query OK, 1 row affected (0.23 sec)
+
+mysql> use rvce;
+Database changed
+mysql> create table MUSICIAN(ssn varchar(10) primary key,name varchar (10) NOT NULL,contact bigint(10),address varchar(10));
+Query OK, 0 rows affected, 1 warning (1.34 sec)
+
+mysql> desc MUSICIAN;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| ssn     | varchar(10) | NO   | PRI | NULL    |       |
+| name    | varchar(10) | NO   |     | NULL    |       |
+| contact | bigint      | YES  |     | NULL    |       |
+| address | varchar(10) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.05 sec)
+
+mysql> create table INSTRUMENT(instID varchar(10)primary key,name varchar(10),musickey varchar(5));
+Query OK, 0 rows affected (1.15 sec)
+
+mysql> desc INSTRUMENT;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| instID   | varchar(10) | NO   | PRI | NULL    |       |
+| name     | varchar(10) | YES  |     | NULL    |       |
+| musickey | varchar(5)  | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.14 sec)
+
+mysql> create table ALBUM(albumid varchar(10)primary key,title varchar(10),copyrightdate date,ssn varchar(10),foreign key(ssn) references MUSICIAN(ssn));
+Query OK, 0 rows affected (1.25 sec)
+
+mysql> desc ALBUM;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| albumid       | varchar(10) | NO   | PRI | NULL    |       |
+| title         | varchar(10) | YES  |     | NULL    |       |
+| copyrightdate | date        | YES  |     | NULL    |       |
+| ssn           | varchar(10) | YES  | MUL | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+4 rows in set (0.08 sec)
+
+mysql> create table PLAY(ssn varchar(10),inst_ID varchar(10),foreign key(ssn) references MUSICIAN(ssn),foreign key(inst_ID) references INSTRUMENT(instID),primary key(ssn,inst_ID));
+Query OK, 0 rows affected (0.59 sec)
+
+mysql> desc PLAY;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| ssn     | varchar(10) | NO   | PRI | NULL    |       |
+| inst_ID | varchar(10) | NO   | PRI | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+2 rows in set (0.15 sec)
+
+mysql> create table SONG(id varchar(10)primary key,title varchar(10) NOT NULL,author varchar(10),albumid varchar(10),foreign key(albumid) references ALBUM(albumid));
+Query OK, 0 rows affected (0.67 sec)
+
+mysql> desc SONG;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| id      | varchar(10) | NO   | PRI | NULL    |       |
+| title   | varchar(10) | NO   |     | NULL    |       |
+| author  | varchar(10) | YES  |     | NULL    |       |
+| albumid | varchar(10) | YES  | MUL | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.14 sec)
+
+mysql> create table PERFORM(ssn varchar(10),id varchar(10),foreign key(ssn) references MUSICIAN(ssn), foreign key(id) references SONG(id),primary key(ssn,id));
+Query OK, 0 rows affected (1.02 sec)
+
+mysql> desc PERFORM;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| ssn   | varchar(10) | NO   | PRI | NULL    |       |
+| id    | varchar(10) | NO   | PRI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.14 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_lab1 |
++----------------+
+| album          |
+| instrument     |
+| musician       |
+| perform        |
+| play           |
+| song           |
++----------------+
+6 rows in set (0.00 sec)
+
+
+

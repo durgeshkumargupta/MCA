@@ -1,0 +1,70 @@
+Patient:-
+sql> insert into patient values("P001","Gaurav","BGP",20);
+Query OK, 1 row affected (0.009 sec)
+
+sql> insert into patient values("P002","Sonu","Patna",65),("P003","Divesh","UP",80),("P004","Ram","Delhi",40),("P005","Ravi","Mumbai",35);
+Query OK, 4 rows affected (0.011 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+PHARAMA COMPANY:-
+
+sql> insert into pharama_company values("nandi","Delhi",7867656568),("cipla","Mumbai",9967656568),("zinc","Goa",7879876545),("lupin","Up",9643434242),("mankind","chennai",7876845354);
+Query OK, 5 rows affected (0.009 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+sql> insert into pharama_company values("apollo","chennai",9844050879),("biocon","andhra",9877654678),("medplus","karnataka",8073805341);
+Query OK, 3 rows affected (0.009 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+Drug:-
+sql> insert into drug values("Nice","CH2M1","Nandi");
+Query OK, 1 row affected (0.009 sec)
+
+sql> insert into drug values("sumo","N12MG2","cipla"),("Paracetomol","CH3","cipla"),("zincovit","xyz","zinc"),("sinarest","N12MG15","nandi");
+Query OK, 4 rows affected (0.009 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+DOCTOR:-
+sql> insert into doctor values("D001","Durgesh","Cardilogists","5+");
+Query OK, 1 row affected (0.010 sec)
+
+sql> insert into doctor values("D002","Prince","Physicians","3+"),("D003","Aman","gastroenterologists","8+"),("D004","Amit","Nerologists","7+");
+Query OK, 3 rows affected (0.009 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+PHARMACY:-
+sql> insert into pharmacy values("walgreens","bangalore",9823412345),("omnicare","tumkur",7890654678),("riteaid","shivmogga",8076812345),("healthmart","tiptur",8550885540),("bartell","chennai",8097065432);
+
+CHECKS:-
+sql> insert into checks values("D001","P001"),("D002","P002"),("D003","P003"),("D004","P004");
+
+CONTRACT:-
+sql> insert into contract values("biocon","healthmart",'1999/10/4','2021/6/7',"uuu","anup");
+Query OK, 1 row affected (0.009 sec)
+
+sql> insert into contract values("cipla","omnicare",'1999/9/20','2023/6/1',"hhh","sagar");
+Query OK, 1 row affected (0.009 sec)
+
+sql> insert into contract values("lupin","riteaid",'1997/11/11','2029/4/29',"vvv","kumar");
+Query OK, 1 row affected (0.009 sec)
+
+sql> insert into contract values("medplus","walgreens",'1982/9/7','2025/11/20',"nnn","nirup");
+Query OK, 1 row affected (0.009 sec)
+
+PRESCRIBE:-
+sql> insert into prescribe values("D001","P001","Nice",'2021/5/29',3);
+Query OK, 1 row affected (0.008 sec)
+
+sql>insert into prescribe values("D002","P002","Paracetomol",'2021/9/20',10),("D003","P003","sinarest",'2021/4/8',30),("D004","P004","sumo",'2020/9/20',40),("D005","P005","zincovit",'2020/10/4',50);
+Query OK, 4 rows affected (0.010 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+sql>insert into prescribe values("D100","P001","sumo","2013-01-01",40);
+
+SOLD_BY:-
+sql> insert into sold_by values("Nice","bartell",30000);
+Query OK, 1 row affected (0.011 sec)
+
+sql> insert into sold_by values("Paracetomol","healthmart",20000),("sinarest","omnicare",12000),("sumo","riteaid",9000),("zincovit","walgreens",45000);
+Query OK, 4 rows affected (0.009 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+

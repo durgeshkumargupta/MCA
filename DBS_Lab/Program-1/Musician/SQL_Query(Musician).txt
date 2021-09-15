@@ -1,0 +1,23 @@
+Reference:-(http://studyittoday.blogspot.com/2014/07/dbms-lab1-my-sql.html#)
+
+1.a:- List  musician  name,  title  of  the  song  which  he  has  played,  the  album  in  which  song  has occulted.
+Answer:-select m.name,s.title,a.albumid from musician m,perform p,song s,album a where m.ssn=p.ssn and p.id=s.id and s.albumid=a.albumid;
+or
+select m.name,s.title,a.title from musician m,perform p,song s,album a where m.ssn=p.ssn and p.id=s.id and s.albumid=a.albumid;
+
+2.b:-List the musicians who have not produced any album.
+Answer:-select m.ssn,m.name from musician m where m.ssn not in(select m.ssn from musician m,album a where m.ssn=a.ssn);
+
+3.c:-List the details of songs which are performed bymore than 3 musicians.
+Answer:-select s.id,s.title from song s,perform p where s.id=p.id group by p.id having count(p.id)>=3;
+
+4.d:-List the different instruments played by the musicians and the average number of musicians who play the instrument.
+Answer:-select count(p.inst_id), i.name,count(p.Inst_ID)/(select count(*) from musician) as 'Musician name' from play p ,instrument i where i.instID=p.inst_id group by p.inst_id ;
+
+
+5:-Retrieve  album  title  produced  by  the  producer  who  plays  guitar  as  well  as  flute  and  has produced no of songs greater than the average songsproduced by all producers.
+Answer:-select m.*from musician m,play p,instrument i where m.ssn=p.ssn group by p.ssn having count(distinct p.inst_ID)=count(distinct i.instid);
+
+
+6.f:-List the details of musicians who can play all the instruments present.
+Answer:-select distinct(a.title) from album a, instrument i, play p where p.inst_ID=i.instID and a.ssn=p.ssn and p.ssn in (select ssn from album where noofsongs >(select avg(noofsongs) from album)) and i.name in ('flute','guitar') ;

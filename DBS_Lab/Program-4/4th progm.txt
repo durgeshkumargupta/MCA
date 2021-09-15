@@ -1,0 +1,70 @@
+db.employee.insertOne({ssn:123,name:"Suman",department:"finance",salary:2000,projects:2,experiance:20})
+{
+        "acknowledged" : true,
+        "insertedId" : ObjectId("613d94b95bf334e346927f35")
+}
+> db.employee.insertOne({ssn:124,name:"Ravi",department:"banking",salary:3000,projects:4,experiance:10})
+{
+        "acknowledged" : true,
+        "insertedId" : ObjectId("613d94d65bf334e346927f36")
+}
+> db.employee.insertOne({ssn:125,name:"Deepak",department:"accounts",salary:4000,projects:1,experiance:15})
+{
+        "acknowledged" : true,
+        "insertedId" : ObjectId("613d94f15bf334e346927f37")
+}
+> db.employee.insertOne({ssn:126,name:"Prince",department:"finance",salary:5000,project:5,experiance:12})
+{
+        "acknowledged" : true,
+        "insertedId" : ObjectId("613d950c5bf334e346927f38")
+}
+> db.employee.insertOne({ssn:127,name:"sanjay",department:"stockbroker",salary:1000,projects:3,experiance:11})
+{
+        "acknowledged" : true,
+        "insertedId" : ObjectId("613d95345bf334e346927f39")
+}
+
+db.employee.find().sort({"ssn":1})
+{ "_id" : ObjectId("613d94b95bf334e346927f35"), "ssn" : 123, "name" : "vishwas", "department" : "finance", "salary" : 2000, "projects" : 2, "experiance" : 20 }
+{ "_id" : ObjectId("613d97325bf334e346927f3a"), "ssn" : 124, "name" : "nehash", "department" : "banking", "salary" : 3000, "projects" : 4, "experiance" : 10 }
+{ "_id" : ObjectId("613d94f15bf334e346927f37"), "ssn" : 125, "name" : "tejas", "department" : "accounts", "salary" : 4000, "projects" : 1, "experiance" : 15 }
+{ "_id" : ObjectId("613d950c5bf334e346927f38"), "ssn" : 126, "name" : "akash", "department" : "finance", "salary" : 5000, "project" : 5, "experiance" : 12, "awarded" : "employee of year" }
+{ "_id" : ObjectId("613d95345bf334e346927f39"), "ssn" : 127, "name" : "sanjay", "department" : "stockbroker", "salary" : 1000, "projects" : 3, "experiance" : 11 }
+
+
+3.>db.employee.find({department:"finance"}).forEach(printjson);
+{
+        "_id" : ObjectId("613d94b95bf334e346927f35"),
+        "ssn" : 123,
+        "name" : "vishwas",
+        "department" : "finance",
+        "salary" : 2000,
+        "projects" : 2,
+        "experiance" : 20
+}
+{
+        "_id" : ObjectId("613d950c5bf334e346927f38"),
+        "ssn" : 126,
+        "name" : "akash",
+        "department" : "finance",
+        "salary" : 5000,
+        "project" : 5,
+        "experiance" : 12,
+        "awarded" : "employee of year"
+}
+
+ db.employee.find().sort({salary:-1}).limit(1)
+{ "_id" : ObjectId("613d950c5bf334e346927f38"), "ssn" : 126, "name" : "akash", "department" : "finance", "salary" : 5000, "project" : 5, "experiance" : 12 }
+
+
+
+db.employee.find().sort({salary:-1}).limit(1)
+{ "_id" : ObjectId("613d950c5bf334e346927f38"), "ssn" : 126, "name" : "akash", "department" : "finance", "salary" : 5000, "project" : 5, "experiance" : 12 }
+> db.employee.update({projects:5},{$set:{awarded:"employee of year"}})
+WriteResult({ "nMatched" : 0, "nUpserted" : 0, "nModified" : 0 })
+5.> db.employee.update({project:5},{$set:{awarded:"employee of year"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+
+db.employee.deleteOne({experiance:11})
+{ "acknowledged" : true, "deletedCount" : 1 }

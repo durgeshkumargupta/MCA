@@ -1,0 +1,111 @@
+mysql>create database health;
+
+mysql>use health;
+
+mysql>create table doctor(d_ssn varchar(10) primary key,name varchar(20) not null,speciality varchar(20),experience varchar(10));
+Query OK, 0 rows affected (0.33 sec)
+
+mysql> desc doctor;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| ssn        | varchar(10) | NO   | PRI | NULL    |       |
+| name       | varchar(20) | NO   |     | NULL    |       |
+| speciality | varchar(20) | YES  |     | NULL    |       |
+| experience | varchar(10) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+
+mysql>create table patient(p_ssn varchar(20) primary key ,name varchar(20) not null,address varchar(30),age int);
+Query OK, 0 rows affected (0.22 sec)
+
+MariaDB [health]> desc patient;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| p_ssn   | varchar(20) | NO   | PRI | NULL    |       |
+| name    | varchar(20) | NO   |     | NULL    |       |
+| address | varchar(30) | YES  |     | NULL    |       |
+| age     | int(11)     | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.05 sec)
+
+mysql>create table pharama_company(pc_name varchar(20) primary key,address varchar(20),phone_no bigint(10));
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| pc_name  | varchar(20) | NO   | PRI | NULL    |       |
+| address  | varchar(20) | YES  |     | NULL    |       |
+| phone_no | bigint(10)  | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+
+mysql> create table drug(trade_name varchar(20) primary key,formula varchar(20),pc_name varchar(10),foreign key(pc_name) references pharama_company(pc_name));
+Query OK, 0 rows affected (0.26 sec)
+
+MariaDB [health]> desc drug;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| trade_name | varchar(20) | NO   | PRI | NULL    |       |
+| formula    | varchar(20) | YES  |     | NULL    |       |
+| pc_name    | varchar(10) | YES  | MUL | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+
+mysql>create table pharmacy(p_name varchar(20) primary key,address varchar(20),ph_no bigint(10));
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| p_name  | varchar(20) | NO   | PRI | NULL    |       |
+| address | varchar(20) | YES  |     | NULL    |       |
+| ph_no   | bigint(10)  | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+
+mysql> create table checks(d_ssn varchar(10),p_ssn varchar(10),foreign key(d_ssn) references doctor(d_ssn),foreign key(p_ssn) references patient(p_ssn),primary key(d_ssn,p_ssn));
+mysql>desc checks;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| d_ssn | varchar(10) | NO   | PRI | NULL    |       |
+| p_ssn | varchar(10) | NO   | PRI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+
+mysql>create table prescribe(d_ssn varchar(10),p_ssn varchar(10),trade_name varchar(20),prescribe_date date,quantity int(5),foreign key(d_ssn) references doctor(d_ssn),foreign key(p_ssn) references patient(p_ssn),foreign key(trade_name) references drug(trade_name),primary key(d_ssn,p_ssn,trade_name));
+Query OK, 0 rows affected (0.27 sec)
+
+mysql> desc prescribe;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| d_ssn          | varchar(10) | NO   | PRI | NULL    |       |
+| p_ssn          | varchar(10) | NO   | PRI | NULL    |       |
+| trade_name     | varchar(20) | NO   | PRI | NULL    |       |
+| prescribe_date | date        | YES  |     | NULL    |       |
+| quantity       | int(5)      | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> create table sold_by(trade_name varchar(20),p_name varchar(20),price int(8),foreign key(trade_name) references drug(trade_name),foreign key(p_name) references pharmacy(p_name),primary key(trade_name,p_name));
+Query OK, 0 rows affected (0.28 sec)
+
+mysql> desc sold_by;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| trade_name | varchar(20) | NO   | PRI | NULL    |       |
+| p_name     | varchar(20) | NO   | PRI | NULL    |       |
+| price      | int(8)      | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+
+mysql> create table contract(pc_name varchar(20),p_name varchar(20),s_date date,end_date date,text varchar(30),supervisor varchar(20),foreign key(pc_name) references pharama_company(pc_name),foreign key(p_name) references pharmacy(p_name),primary key(pc_name,p_name));
+
+mysql> desc contract;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| pc_name    | varchar(20) | NO   | PRI | NULL    |       |
+| p_name     | varchar(20) | NO   | PRI | NULL    |       |
+| s_date     | date        | YES  |     | NULL    |       |
+| end_date   | date        | YES  |     | NULL    |       |
+| text       | varchar(30) | YES  |     | NULL    |       |
+| supervisor | varchar(20) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.02 sec)
