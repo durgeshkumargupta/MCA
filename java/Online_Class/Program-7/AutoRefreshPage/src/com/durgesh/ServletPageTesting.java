@@ -32,17 +32,6 @@ public class ServletPageTesting extends HttpServlet {
 		price1 = price1 * .43;
 		price2 = price2 * 1.33;
 	
-		/*
-		 * StringBuilder sb = new StringBuilder();
-        sb.append("<html>")
-                .append("<body>")
-                .append("<p>Employee has been registered successfully!</p>")
-                .append("<br/>")
-                .append("<a href='index.html'>Click Here to go to Home Page</a>")
-                .append("</body>")
-                .append("</html>");
-        resp.getWriter().write(sb.toString());
-		 */
 		StringBuilder sb = new StringBuilder();
 		 sb.append("<html>")
          .append("<body  style=background-color:e2e2e2;text-align:center;>")
